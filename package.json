@@ -1,0 +1,76 @@
+{
+  "name": "@tokens-studio/color-picker",
+  "version": "0.0.0",
+  "description": "Colorjs.io-based color picker as a reusable webcomponent",
+  "license": "MIT",
+  "author": "Joren Broekema <joren.broekema@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokens-studio/color-picker.git"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./src/ts-color-picker.js",
+    "./define": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "wds --open --node-resolve --watch --app-index demo/index.html",
+    "build": "tsc --emitDeclarationOnly",
+    "bundle-demo": "rollup -c rollup.config.js",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "format:eslint": "eslint \"**/*.js\" --fix",
+    "format:prettier": "prettier \"**/*.js\" \"package.json\" --write",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint \"**/*.js\"",
+    "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
+    "lint:types": "tsc --noEmit",
+    "prepare": "husky",
+    "release": "npm run build && changeset publish",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:integration": "ts-mocha -n loader=ts-node/esm -p tsconfig.json test/**/*.test.ts",
+    "test:unit": "web-test-runner --coverage",
+    "test:unit:coverage": "cd coverage/lcov-report && npx http-server -o -c-1",
+    "test:unit:watch": "web-test-runner --watch",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "colorjs.io": "^0.5.2",
+    "lit": "^3.1.4"
+  },
+  "keywords": [
+    "colorjs.io",
+    "color",
+    "picker",
+    "webcomponent"
+  ],
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "@web/dev-server": "^0.4.6",
+    "@web/rollup-plugin-html": "^2.3.0",
+    "@web/test-runner": "^0.18.2",
+    "@web/test-runner-playwright": "^0.11.0",
+    "chai": "^5.1.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-mocha": "^10.4.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "npm-run-all": "^4.1.5",
+    "patch-package": "^8.0.0",
+    "prettier": "^3.3.2",
+    "prettier-package-json": "^2.8.0",
+    "rollup": "^4.18.1",
+    "typescript": "^5.5.3"
+  }
+}

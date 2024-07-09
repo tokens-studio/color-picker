@@ -1,0 +1,13 @@
+diff --git a/node_modules/colorjs.io/types/src/space.d.ts b/node_modules/colorjs.io/types/src/space.d.ts
+index 33facad..e53b6c5 100644
+--- a/node_modules/colorjs.io/types/src/space.d.ts
++++ b/node_modules/colorjs.io/types/src/space.d.ts
+@@ -110,7 +110,7 @@ export default class ColorSpace {
+ 
+ 	static registry: Record<string, ColorSpace>;
+ 
+-	get all (): Set<ColorSpace>;
++	static get all (): Set<ColorSpace>;
+ 	/** The ID used by CSS, such as `display-p3` or `--cam16-jmh` */
+ 	get cssId (): string;
+ 	get isPolar (): boolean;

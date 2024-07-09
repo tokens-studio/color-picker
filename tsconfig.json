@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ESNext", "dom"],
+    "strict": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "types": ["node", "mocha"],
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "checkJs": true,
+    "allowJs": true
+  },
+  "include": ["**/*.js"],
+  "exclude": ["node_modules", "**/coverage/*", "dist"]
+}
