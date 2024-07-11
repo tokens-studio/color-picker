@@ -1,6 +1,6 @@
 {
   "name": "@tokens-studio/color-picker",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Colorjs.io-based color picker as a reusable webcomponent",
   "license": "MIT",
   "author": "Joren Broekema <joren.broekema@gmail.com>",
