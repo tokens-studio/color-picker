@@ -23,7 +23,12 @@ export class TSColorPicker extends LitElement {
         state: true,
       },
       precision: {
+        reflect: true,
         state: true,
+      },
+      variant: {
+        reflect: true,
+        type: String,
       },
     };
   }
@@ -135,11 +140,12 @@ export class TSColorPicker extends LitElement {
   constructor() {
     super();
     this.alpha = 100;
-    this.precision = 3;
+    this.precision = 2;
     this.colorSpaces = Color.Space.all;
     /** @type {Coords} */
     this.coords = /** @type {Coords} */ ([50, 50, 50]);
     this.initialSpace = 'hsl';
+    this.variant = 'default';
   }
 
   connectedCallback() {
@@ -184,32 +190,30 @@ export class TSColorPicker extends LitElement {
 
   render() {
     return html`
-      <div class="main">
-        <div class="header">
-          <h1>
-            <select
-              class="autosize"
-              @change=${
-                /** @param {Event} e */ e => {
-                  this.spaceId = /** @type {HTMLSelectElement} */ (e.target).value;
-                }
-              }
-            >
-              ${Array.from(this.colorSpaces).map(
-                space => html`
-                  <option ?selected=${space.id === this.spaceId} value="${space.id}">
-                    ${space.name}
-                  </option>
-                `,
-              )}
-            </select>
-            <div>Colour Picker <button @click=${this.CSSColorToLCH}>Import color…</button></div>
-          </h1>
-        </div>
+      <div class="color-picker color-picker--${this.variant}">
+        <button @click=${this.CSSColorToLCH}>Import color…</button>
+        <select
+          class="autosize"
+          @change=${
+            /** @param {Event} e */ e => {
+              this.spaceId = /** @type {HTMLSelectElement} */ (e.target).value;
+            }
+          }
+        >
+          ${Array.from(this.colorSpaces).map(
+            space => html`
+              <option ?selected=${space.id === this.spaceId} value="${space.id}">
+                ${space.name}
+              </option>
+            `,
+          )}
+        </select>
         ${this.coordMeta.map(
           (meta, i) => html`
             <label class="color-slider-label">
-              ${meta.name} (${meta.min}-${meta.max})
+              ${this.variant === 'minimal'
+                ? meta.name.charAt(0).toUpperCase()
+                : html`${meta.name} (${meta.min}-${meta.max})`}
               <input
                 class="color-slider"
                 type="range"
@@ -233,8 +237,8 @@ export class TSColorPicker extends LitElement {
             </label>
           `,
         )}
-        <label class="color-slider-label"
-          >Alpha (0-100)
+        <label class="color-slider-label">
+          ${this.variant === 'minimal' ? html`&alpha;` : 'Alpha (0-100)'}
           <input
             class="color-slider"
             type="range"
@@ -250,61 +254,63 @@ export class TSColorPicker extends LitElement {
             max="100"
           />
         </label>
-        <fieldset>
-          <legend>
-            Output
-            <span class="precision autosize">
-              (<input
-                value=${`${this.precision}`}
-                @change=${
-                  /** @param {Event} e */ e =>
-                    (this.precision = parseFloat(/** @type {HTMLInputElement} */ (e.target).value))
-                }
-                type="number"
-                min="0"
-                max="20"
-              />
-              significant digits)
-            </span>
-          </legend>
-          <div class="color-block"></div>
-          <label>
-            Serialized color
-            <input
-              @click=${this.selectTextOnClick}
-              class="color-css"
-              .value="${this.serializedColor}"
-              readonly
-            />
-          </label>
 
-          <label>
-            Displayed color
-            <input
-              @click=${this.selectTextOnClick}
-              class="color-css"
-              .value="${this.cssColor}"
-              readonly
-            />
-          </label>
-
-          <label
-            class=${classMap({ 'out-of-gamut': !this.color.inGamut('srgb', { epsilon: 0.00005 }) })}
-          >
-            <abbr>sRGB</abbr> Color
-            <input
-              @click=${this.selectTextOnClick}
-              class="color-srgb"
-              .value=${this.serializedColorSrgb}
-              readonly
-            />
-            <div class="out-of-gamut-warning">
-              Color is actually ${this.serializedColorSrgbOog}, which is out of sRGB gamut;
-              auto-corrected to sRGB boundary.
-            </div>
-          </label>
-        </fieldset>
+        ${this.variant === 'default' ? this.renderOutputs() : ''}
       </div>
+    `;
+  }
+
+  javascriptCopyrender() {
+    return html`
+      <div class="main">
+        <!-- ... existing code for color pickers and sliders ... -->
+
+        ${this.variant === 'default' ? this.renderOutputs() : ''}
+      </div>
+    `;
+  }
+
+  renderOutputs() {
+    return html`
+      <fieldset>
+        <legend>Output</legend>
+        <div class="color-block"></div>
+        <label>
+          Serialized color
+          <input
+            @click=${this.selectTextOnClick}
+            class="color-css"
+            .value="${this.serializedColor}"
+            readonly
+          />
+        </label>
+
+        <label>
+          Displayed color
+          <input
+            @click=${this.selectTextOnClick}
+            class="color-css"
+            .value="${this.cssColor}"
+            readonly
+          />
+        </label>
+
+        <label
+          class=${classMap({ 'out-of-gamut': !this.color.inGamut('srgb', { epsilon: 0.00005 }) })}
+        >
+          <abbr>sRGB</abbr> Color
+          <input
+            @click=${this.selectTextOnClick}
+            class="color-srgb"
+            .value=${this.serializedColorSrgb}
+            readonly
+          />
+          <div class="out-of-gamut-warning">
+            Color is actually ${this.serializedColorSrgbOog}, which is out of sRGB gamut;
+            auto-corrected to sRGB boundary.
+          </div>
+        </label>
+      </fieldset>
     `;
   }
 

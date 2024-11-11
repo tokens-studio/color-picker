@@ -2,6 +2,19 @@ import { css } from 'lit';
 
 export default css`
   :host {
+    --ts-color-picker-background: #f0f0f0;
+    --ts-color-picker-text-color: rgba(0, 0, 0, 0.5);
+    --ts-color-picker-border-color: hsl(220 10% 80%);
+    --ts-color-picker-input-background: rgba(26, 26, 26, 0.05);
+    --ts-color-picker-button-background: rgba(0, 0, 0, 0.15);
+    --ts-color-picker-button-hover-background: rgba(0, 0, 0, 0.25);
+    --ts-color-picker-slider-height: 2.2em;
+    --ts-color-picker-slider-thumb-width: 1em;
+    --ts-color-picker-slider-thumb-height: 2.3em;
+    --ts-color-picker-minimal-width: 240px;
+    --ts-color-picker-minimal-slider-height: 1em;
+    --ts-color-picker-minimal-slider-thumb-width: 0.5em;
+    --ts-color-picker-minimal-slider-thumb-height: 1em;
     --color: hsl(50 50 50);
     --transparency: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill-opacity=".05"><rect width="50" height="50" /><rect x="50" y="50" width="50" height="50" /></svg>')
       0 0 / 20px 20px #f8f8f8;
@@ -10,15 +23,12 @@ export default css`
   .coord-1 {
     left: calc(100% * var(--percentage-1));
   }
-
   .coord-2 {
     left: calc(100% * var(--percentage-2));
   }
-
   .coord-3 {
     left: calc(100% * var(--percentage-3));
   }
-
   .alpha {
     left: calc(100% * var(--alpha));
   }
@@ -28,18 +38,11 @@ export default css`
     margin: 0;
   }
 
-  .header {
-    align-items: center;
-    margin: 0 0 0.5em;
-    line-height: 1;
-    letter-spacing: -0.05em;
-  }
-
   .header select {
     max-width: calc(100% - 0.2em);
     box-sizing: content-box;
     padding: 0;
-    border: 0.1em solid hsl(220 10% 60%);
+    border: 0.1em solid var(--ts-color-picker-border-color);
     border-radius: 0.2em;
     margin-bottom: 0.2em;
     font: inherit;
@@ -53,13 +56,17 @@ export default css`
     vertical-align: 0.4em;
   }
 
-  .main {
+  .color-picker {
     padding: 1.5em;
     border-radius: 0.5em;
     width: 40em;
     max-width: 90vw;
     margin: 1em auto;
-    background: #f0f0f0;
+    background: var(--ts-color-picker-background);
+  }
+
+  .color-picker--minimal {
+    width: var(--ts-color-picker-minimal-width);
   }
 
   .color-block {
@@ -68,7 +75,7 @@ export default css`
   }
 
   fieldset {
-    border: 1px solid hsl(220 10% 80%);
+    border: 1px solid var(--ts-color-picker-border-color);
     border-radius: 0.3em;
     margin: 0;
     margin-top: 1em;
@@ -82,7 +89,7 @@ export default css`
     font-size: smaller;
     margin-top: 1em;
     font-weight: bold;
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--ts-color-picker-text-color);
   }
 
   abbr {
@@ -96,23 +103,33 @@ export default css`
     -moz-appearance: none;
     -webkit-appearance: none;
     background: linear-gradient(to right, var(--stops)), var(--transparency);
-    height: 2.2em;
+    height: var(--ts-color-picker-slider-height);
     border-radius: 0.3em;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
   }
 
+  .color-picker--minimal .color-slider {
+    margin: 0;
+    height: var(--ts-color-picker-minimal-slider-height);
+  }
+
   .color-slider::-webkit-slider-thumb {
-    width: 1em;
-    height: 2.3em;
+    width: var(--ts-color-picker-slider-thumb-width);
+    height: var(--ts-color-picker-slider-thumb-height);
     -webkit-appearance: none;
     border-radius: 0.15em;
     border: 1px solid black;
     box-shadow: 0 0 0 1px white;
   }
 
+  .color-picker--minimal .color-slider::-webkit-slider-thumb {
+    width: var(--ts-color-picker-minimal-slider-thumb-width);
+    height: var(--ts-color-picker-minimal-slider-thumb-height);
+  }
+
   .color-slider::-moz-range-thumb {
-    width: 1em;
-    height: 2.3em;
+    width: var(--ts-color-picker-slider-thumb-width);
+    height: var(--ts-color-picker-slider-thumb-height);
     border-radius: 0.15em;
     border: 1px solid black;
     box-shadow: 0 0 0 1px white;
@@ -125,6 +142,11 @@ export default css`
 
   .color-slider-label {
     position: relative;
+  }
+
+  .color-picker--minimal .color-slider-label {
+    display: flex;
+    gap: 1rem;
   }
 
   .color-slider + input[type='number'] {
@@ -144,7 +166,6 @@ export default css`
     transition: 0.3s left cubic-bezier(0.17, 0.67, 0.49, 1.48);
   }
 
-  /* Prevent input from moving all over the place as we type */
   .color-slider + input[type='number']:focus {
     transition-delay: 0.5s;
   }
@@ -159,7 +180,7 @@ export default css`
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.3em;
     box-shadow: 0 0.05em 0.2em rgba(0, 0, 0, 0.2) inset;
-    background: rgba(26, 26, 26, 0.05);
+    background: var(--ts-color-picker-input-background);
     width: 100% !important;
     box-sizing: border-box;
     font:
@@ -198,7 +219,7 @@ export default css`
     padding: 0.4em 0.6em;
     border: 0;
     margin: 0 0.5em;
-    background: rgba(0, 0, 0, 0.15);
+    background: var(--ts-color-picker-button-background);
     border-radius: 0.3em;
     font-weight: bold;
     text-transform: uppercase;
@@ -206,7 +227,7 @@ export default css`
   }
 
   h2 button:hover {
-    background: rgba(0, 0, 0, 0.25);
+    background: var(--ts-color-picker-button-hover-background);
   }
 
   h2 .clear {
